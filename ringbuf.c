@@ -54,8 +54,30 @@ int ringbuf_write(RingBuffer *rb, uint8_t data){
     
 }
 
+//reading data 
+
+
+int ringbuf_read(RingBuffer *rb, uint8_t *data){
+    if(ringbuf_is_empty(rb))
+    {
+        return -1;
+    }
+
+    *data = rb->buffer[rb->tail];
+
+    rb->tail = (rb->tail + 1) % BUFFER_SIZE;
+
+    rb->count--;
+
+    return 0;
+
+}
+
 int main (){
      RingBuffer rb;
+
+     
+
 
     if(ringbuf_is_empty(&rb)){
         printf("Buffer is Empty\n");
@@ -69,7 +91,13 @@ int main (){
 
     }else {
         printf("buffer is not full\n");
-    }   
+    }  
+    
+    ringbuf_write(&rb, 0x41);
+    ringbuf_write(&rb, 0x42);
+    
+    printf("Head = %d\n", rb.head);
+    printf("Count = %d\n", rb.count);
 
    
     
