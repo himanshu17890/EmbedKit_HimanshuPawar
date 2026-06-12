@@ -39,9 +39,12 @@ int ringbuf_write(RingBuffer *rb, uint8_t data){
     if(ringbuf_is_full(rb)){
         return -1 ;
     }
+ // storing the data 
+    rb-> buffer[rb -> head] = data; 
 
-    rb-> buffer[rb -> head] = data;
-    
+// next move  head 
+    rb->head =(rb -> head +1 )%BUFFER_SIZE;
+
     
 }
 
@@ -62,7 +65,7 @@ int main (){
         printf("buffer is not full\n");
     }   
 
-    // storing the data 
+   
     
 
     
