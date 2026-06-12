@@ -32,6 +32,11 @@ int ringbuf_is_full(RingBuffer *rb){
 
 uint8_t ringbuf_count(RingBuffer *rb){
     return rb-> count;
+} 
+
+// writing data 
+int ringbuf_write(RingBuffer *rb, uint8_t data){
+    
 }
 
 int main (){
@@ -49,7 +54,9 @@ int main (){
 
     }else {
         printf("buffer is not full\n");
-    }
+    }  
+
+    
 
     printf("current count = %u\n",ringbuf_count(&rb));
     //printf("Ring Buffer Assignment\n");
