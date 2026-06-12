@@ -1,7 +1,6 @@
 # EmbedKit_HimanshuPawar
 Embedded C Utility Library Assignment
 
-# EmbedKit_HimanshuPawar
 
 ## Name
 Himanshu Pawar
