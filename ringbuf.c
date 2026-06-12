@@ -80,58 +80,85 @@ int ringbuf_read(RingBuffer *rb, uint8_t *data){
 
 }
 
-int main (){
-     RingBuffer rb; 
-     ringbuf_init(&rb);
-
-     
-
-
-    if(ringbuf_is_empty(&rb)){
-        printf("Buffer is Empty\n");
-
-    }else{
-        printf("Buffer is not empty\n");
-    }
-
-    if(ringbuf_is_full(&rb)){
-        printf("Buffer is full\n");
-
-    }else {
-        printf("buffer is not full\n");
-    } 
-
-    // writing operation 
-    ringbuf_write(&rb, 0x41);
-    ringbuf_write(&rb, 0x42);
-    
-    printf("Head = %d\n", rb.head);
-    printf("Count = %d\n", rb.count); 
-
-  // reading operation
+int main()
+{
+    RingBuffer rb;
     uint8_t data;
 
-   ringbuf_read(&rb, &data);
-
-   printf("Read Data = 0x%X\n", data);
-   printf("Tail = %d\n", rb.tail);
-   printf("Count = %d\n", rb.count);
-
-   
-    
-
-    
-
-    printf("current count = %u\n",ringbuf_count(&rb));
-    //printf("Ring Buffer Assignment\n");
-   
-    
     ringbuf_init(&rb);
 
-    printf("Head = %d\n", rb.head);
-    printf("tail = %d\n", rb.tail);
-    printf("count = %d\n", rb.count);
+    // Write 8 bytes 
+    uint8_t write_data1[] = {
+        0x41, 0x42, 0x43, 0x44,
+        0x45, 0x46, 0x47, 0x48
+    };
+
+    for(int i = 0; i < 8; i++)
+    {
+        if(ringbuf_write(&rb, write_data1[i]) == 0)
+        {
+            printf("[WRITE] 0x%X -> OK (count=%u)",
+                   write_data1[i],
+                   ringbuf_count(&rb));
+
+            if(ringbuf_is_full(&rb))
+            {
+                printf(" FULL");
+            }
+
+            printf("\n");
+        }
+    }
+
+    //  Overflow Test 
+    if(ringbuf_write(&rb, 0x99) == -1)
+    {
+        printf("[WRITE] 0x99 -> FAIL (buffer full)\n");
+    }
+
+    // Read 3 bytes 
+    for(int i = 0; i < 3; i++)
+    {
+        if(ringbuf_read(&rb, &data) == 0)
+        {
+            printf("[READ] -> 0x%X (count=%u)\n",
+                   data,
+                   ringbuf_count(&rb));
+        }
+    }
+
+    /* Write 3 new bytes */
+    uint8_t write_data2[] = {0x49, 0x4A, 0x4B};
+
+    for(int i = 0; i < 3; i++)
+    {
+        if(ringbuf_write(&rb, write_data2[i]) == 0)
+        {
+            printf("[WRITE] 0x%X -> OK (count=%u)\n",
+                   write_data2[i],
+                   ringbuf_count(&rb));
+        }
+    }
+
+    /*  Read remaining 8 bytes */
+    while(!ringbuf_is_empty(&rb))
+    {
+        if(ringbuf_read(&rb, &data) == 0)
+        {
+            printf("[READ] -> 0x%X (count=%u)\n",
+                   data,
+                   ringbuf_count(&rb));
+        }
+    }
+
+    printf("Buffer Empty = %s\n",
+           ringbuf_is_empty(&rb) ? "YES" : "NO");
+
+    /*  Read from empty buffer */
+    if(ringbuf_read(&rb, &data) == -1)
+    {
+        printf("[READ] (empty) -> FAIL (buffer empty)\n");
+    }
 
     return 0;
-} 
-
+}
