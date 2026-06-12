@@ -58,14 +58,21 @@ int ringbuf_write(RingBuffer *rb, uint8_t data){
 
 
 int ringbuf_read(RingBuffer *rb, uint8_t *data){
+    // check if empty 
     if(ringbuf_is_empty(rb))
     {
         return -1;
     }
 
+     // reading the value tail = 0
+     //buffer[0] = 0x41
     *data = rb->buffer[rb->tail];
 
+    // moving the tail 
+
     rb->tail = (rb->tail + 1) % BUFFER_SIZE;
+
+    //Decreasing the count 
 
     rb->count--;
 
@@ -74,7 +81,8 @@ int ringbuf_read(RingBuffer *rb, uint8_t *data){
 }
 
 int main (){
-     RingBuffer rb;
+     RingBuffer rb; 
+     ringbuf_init(&rb);
 
      
 
@@ -91,13 +99,23 @@ int main (){
 
     }else {
         printf("buffer is not full\n");
-    }  
-    
+    } 
+
+    // writing operation 
     ringbuf_write(&rb, 0x41);
     ringbuf_write(&rb, 0x42);
     
     printf("Head = %d\n", rb.head);
-    printf("Count = %d\n", rb.count);
+    printf("Count = %d\n", rb.count); 
+
+  // reading operation
+    uint8_t data;
+
+   ringbuf_read(&rb, &data);
+
+   printf("Read Data = 0x%X\n", data);
+   printf("Tail = %d\n", rb.tail);
+   printf("Count = %d\n", rb.count);
 
    
     
@@ -107,7 +125,7 @@ int main (){
     printf("current count = %u\n",ringbuf_count(&rb));
     //printf("Ring Buffer Assignment\n");
    
-
+    
     ringbuf_init(&rb);
 
     printf("Head = %d\n", rb.head);
