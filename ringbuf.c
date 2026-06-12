@@ -46,7 +46,10 @@ int ringbuf_write(RingBuffer *rb, uint8_t data){
     rb->head =(rb -> head +1 )%BUFFER_SIZE;  
 
 // incrementing the count 
-    rb->count++;
+    rb->count++; 
+
+    return 0;
+
 
     
 }
