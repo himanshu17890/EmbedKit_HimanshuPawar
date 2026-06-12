@@ -36,6 +36,9 @@ uint8_t ringbuf_count(RingBuffer *rb){
 
 // writing data 
 int ringbuf_write(RingBuffer *rb, uint8_t data){
+    if(ringbuf_is_full(rb)){
+        return -1 ;
+    }
     
 }
 
