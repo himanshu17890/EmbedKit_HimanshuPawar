@@ -16,10 +16,22 @@ void ringbuf_init(RingBuffer *rb){
     rb -> count = 0;
 
 }
+// creating a empty check function 
+int ringbuf_is_empty(RingBuffer *rb){
+    return(rb -> count == 0);
+}
 
 int main (){
+     RingBuffer rb;
+
+    if(ringbuf_is_empty(&rb)){
+        printf("Buffer is Empty\n");
+
+    }else{
+        printf("Buffer is not empty\n");
+    }
     //printf("Ring Buffer Assignment\n");
-    RingBuffer rb;
+   
 
     ringbuf_init(&rb);
 
@@ -29,3 +41,4 @@ int main (){
 
     return 0;
 } 
+
