@@ -149,6 +149,16 @@ Expected:
 
 ## Build Instructions
 
-### Compile
+
+### Compile 
+gcc -Wall -std=c99 ringbuf.c -o ringbuf
+<img width="1013" height="326" alt="image" src="https://github.com/user-attachments/assets/4e1c4a59-9ba4-4914-92fb-942e1245b776" />
+
+
+### OUTPUT 
+
+<img width="471" height="610" alt="image" src="https://github.com/user-attachments/assets/9bb80a05-2fc4-4fbf-8358-c19cea5c017c" />
+
+
 
 
